@@ -11,6 +11,7 @@ namespace ECommerceItemDiscount.Data
         {
         }
         public DbSet<ProductModel> Products { get; set; }
-        public DbSet<DiscountModel> Discounts { get; set; }          
+        public DbSet<DiscountModel> Discounts { get; set; }      
+        public DbSet<UserModel> Users { get; set; }
     }
 }

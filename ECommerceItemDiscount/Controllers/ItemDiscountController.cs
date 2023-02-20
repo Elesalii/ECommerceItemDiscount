@@ -2,6 +2,7 @@
 using ECommerceItemDiscount.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace ECommerceItemDiscount.Controllers
 {
@@ -44,6 +45,27 @@ namespace ECommerceItemDiscount.Controllers
                     Description = products.Description
                 }).ToList();
             return query;
+        }
+        [HttpPost("UpdateDiscountRate")]
+        public IActionResult UpdateDiscountRate(int categoryId, double rate)
+        {
+            var adminUser = _context.Users.Where(x => x.TypeId == 1).FirstOrDefault();
+            if (adminUser == null)
+            {
+                return NotFound("Admin kullanıcısı bulunamadı");
+            }
+
+            var discount = _context.Discounts.FirstOrDefault(d => d.Id == categoryId);
+            if (discount == null)
+            {
+                return NotFound("İndirim bulunamadı.");
+            }
+
+            discount.Rate = rate;
+            _context.Update(discount);
+            _context.SaveChanges();
+
+            return Ok("İndirim oranı başarıyla güncellendi.");
         }
     }
 }
